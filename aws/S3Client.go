@@ -73,3 +73,39 @@ func(c * S3Client) DownloadFile(bucket, key, downloadPath string) error {
 
     return nil
 }
+
+func (s *S3Client) UploadLargeFile(bucketName string, key string, filepath string) error {
+    file, err := os.Open(filepath)
+    if err != nil {
+        return err
+    }
+    defer file.Close()
+
+    _, err = s.S3API.PutObject(&s3.PutObjectInput{
+        Bucket: aws.String(bucketName),
+        Key:    aws.String(key),
+        Body:   file,
+    })
+    return err
+}
+
+func (s *S3Client) DownloadLargeFile(bucketName string, key string, filepath string) error {
+    output, err := s.S3API.GetObject(&s3.GetObjectInput{
+        Bucket: aws.String(bucketName),
+        Key:    aws.String(key),
+    })
+    if err != nil {
+        return err
+    }
+    defer output.Body.Close()
+
+    file, err := os.Create(filepath)
+    if err != nil {
+        return err
+    }
+    defer file.Close()
+
+    _, err = io.Copy(file, output.Body)
+    return err
+}
+
