@@ -73,17 +73,3 @@ func(c * S3Client) DownloadFile(bucket, key, downloadPath string) error {
 
     return nil
 }
-
-// Mocked methods for MyS3Client
-
-func(m MyS3Client) UploadFile(bucket, key, filePath string) error {
-    // Mocked upload function
-    fmt.Println("Mocked upload function invoked")
-    return nil
-}
-
-func(m MyS3Client) DownloadFile(bucket, key, downloadPath string) error {
-    // Mocked download function
-    fmt.Println("Mocked download function invoked")
-    return nil
-}
