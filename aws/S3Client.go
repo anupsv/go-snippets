@@ -87,39 +87,3 @@ func(m MyS3Client) DownloadFile(bucket, key, downloadPath string) error {
     fmt.Println("Mocked download function invoked")
     return nil
 }
-
-func main() {
-    // Usage of S3Client
-
-    // Initialize a session that the SDK uses to load
-    // credentials from the shared credentials file ~/.aws/credentials
-    // and region from the shared configuration file ~/.aws/config.
-    sess: = session.Must(session.NewSessionWithOptions(session.Options {
-        SharedConfigState: session.SharedConfigEnable,
-    }))
-
-        s3Client: = NewS3Client(sess)
-
-        err: = s3Client.UploadFile("myBucket", "myKey", "myFilePath")
-    if err != nil {
-        log.Fatalf("Upload file failed: %s", err)
-    }
-
-    err = s3Client.DownloadFile("myBucket", "myKey", "myDownloadPath")
-    if err != nil {
-        log.Fatalf("Download file failed: %s", err)
-    }
-
-    // Usage of MyS3Client for testing
-    mockS3Client: = MyS3Client {}
-
-        err = mockS3Client.UploadFile("myBucket", "myKey", "myFilePath")
-    if err != nil {
-        log.Fatalf("Mocked upload file failed: %s", err)
-    }
-
-    err = mockS3Client.DownloadFile("myBucket", "myKey", "myDownloadPath")
-    if err != nil {
-        log.Fatalf("Mocked download file failed: %s", err)
-    }
-}
